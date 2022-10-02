@@ -24,6 +24,8 @@ function App() {
       <button onClick={decrement}>Decrement</button>
 
       <Counter/>
+      <Counter/>
+      <Counter/>
     </div>
   );
 }
