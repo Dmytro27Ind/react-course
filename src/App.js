@@ -41,17 +41,16 @@ function App() {
     {id: 3, title: 'Javascript 3', body: 'Description'},
   ])
 
-  const [posts2, setPosts2] = useState([
-    {id: 1, title: 'Python', body: 'Description'},
-    {id: 2, title: 'Python 2', body: 'Description'},
-    {id: 3, title: 'Python 3', body: 'Description'},
-  ])
-
   return (
     // appOne;
+
     <div className="App">
+      <form>
+        <input type="text" placeholder="Post name"/>
+        <input type="text" placeholder="Post description"/>
+        <button>Create post</button>
+      </form>
       <PostList posts={posts} title="List of posts about JS"/>
-      <PostList posts={posts2} title="List of posts about Python"/>
     </div>
   );
 }
