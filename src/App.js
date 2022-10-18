@@ -60,6 +60,8 @@ function App() {
     }
     console.log(newPost)
     setPosts([...posts, newPost])
+    setTitle('')
+    setBody('')
 
     // console.log("MyInput value = " + bodyInputRef.current.value)
     // console.log("MyInput element = " + bodyInputRef.current)
