@@ -50,10 +50,12 @@ function App() {
   const addNewPost = (event) => {
     event.preventDefault()
     console.log("title = " + title)
-    // console.log("MyInput value = " + bodyInputRef.current.value)
-    // console.log("MyInput element = " + bodyInputRef.current)
+    console.log("MyInput value = " + bodyInputRef.current.value)
+    console.log("MyInput element = " + bodyInputRef.current)
+    console.log(bodyInputRef.current)
     console.log("input value = " + bodyInputRefSimple.current.value)
     console.log("input element = " + bodyInputRefSimple.current)
+    console.log(bodyInputRefSimple.current)
   }
 
   return (
@@ -73,11 +75,11 @@ function App() {
         {/*//* НЕ управляемый компонент. С помощью ref мы получаем ссылку на сам элемент.
            //* bodyInputRef.current == <MyInput ... />
            //* bodyInputRef.current.value == значению в элементе*/}
-        {/* <MyInput
+        <MyInput
           ref={bodyInputRef}
           type="text"
           placeholder="Post description"
-        /> */}
+        />
         {/* <MyButton disabled>Create post</MyButton> */}
         <MyButton onClick={addNewPost}>Create post</MyButton>
       </form>
