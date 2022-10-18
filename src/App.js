@@ -44,18 +44,29 @@ function App() {
   ])
 
   const [title, setTitle] = useState('')
-  const bodyInputRef = useRef()
-  const bodyInputRefSimple = useRef()
+  const [body, setBody] = useState('')
+  // const bodyInputRef = useRef()
+  // const bodyInputRefSimple = useRef()
 
   const addNewPost = (event) => {
     event.preventDefault()
     console.log("title = " + title)
-    console.log("MyInput value = " + bodyInputRef.current.value)
-    console.log("MyInput element = " + bodyInputRef.current)
-    console.log(bodyInputRef.current)
-    console.log("input value = " + bodyInputRefSimple.current.value)
-    console.log("input element = " + bodyInputRefSimple.current)
-    console.log(bodyInputRefSimple.current)
+    console.log("body = " + body)
+
+    const newPost = {
+      id: Date.now(),
+      title,
+      body
+    }
+    console.log(newPost)
+    setPosts([...posts, newPost])
+
+    // console.log("MyInput value = " + bodyInputRef.current.value)
+    // console.log("MyInput element = " + bodyInputRef.current)
+    // console.log(bodyInputRef.current)
+    // console.log("input value = " + bodyInputRefSimple.current.value)
+    // console.log("input element = " + bodyInputRefSimple.current)
+    // console.log(bodyInputRefSimple.current)
   }
 
   return (
@@ -70,16 +81,22 @@ function App() {
           type="text"
           placeholder="Post name"
         />
+        <MyInput
+          value={body}
+          onChange={event => setBody(event.target.value)}
+          type="text"
+          placeholder="Post name"
+        />
         {/*//* Simple input from html */}
-        <input ref={bodyInputRefSimple} type="text"/>
+        {/* <input ref={bodyInputRefSimple} type="text"/> */}
         {/*//* НЕ управляемый компонент. С помощью ref мы получаем ссылку на сам элемент.
            //* bodyInputRef.current == <MyInput ... />
            //* bodyInputRef.current.value == значению в элементе*/}
-        <MyInput
+        {/* <MyInput
           ref={bodyInputRef}
           type="text"
           placeholder="Post description"
-        />
+        /> */}
         {/* <MyButton disabled>Create post</MyButton> */}
         <MyButton onClick={addNewPost}>Create post</MyButton>
       </form>
