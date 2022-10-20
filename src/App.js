@@ -43,25 +43,14 @@ function App() {
     {id: 3, title: 'Javascript 3', body: 'Description'},
   ])
 
-  const [title, setTitle] = useState('')
-  const [body, setBody] = useState('')
+  const [post, setPost] = useState({title: '', body: ''})
   // const bodyInputRef = useRef()
   // const bodyInputRefSimple = useRef()
 
   const addNewPost = (event) => {
     event.preventDefault()
-    console.log("title = " + title)
-    console.log("body = " + body)
-
-    const newPost = {
-      id: Date.now(),
-      title,
-      body
-    }
-    console.log(newPost)
-    setPosts([...posts, newPost])
-    setTitle('')
-    setBody('')
+    setPosts([...posts, {...post, id: Date.now()}])
+    setPost({title: '', body: ''})
 
     // console.log("MyInput value = " + bodyInputRef.current.value)
     // console.log("MyInput element = " + bodyInputRef.current)
@@ -78,16 +67,16 @@ function App() {
       <form>
         {/*//* Управляемый компонент */}
         <MyInput
-          value={title}
-          onChange={event => setTitle(event.target.value)}
+          value={post.title}
+          onChange={event => setPost({...post, title: event.target.value})}
           type="text"
           placeholder="Post name"
         />
         <MyInput
-          value={body}
-          onChange={event => setBody(event.target.value)}
+          value={post.body}
+          onChange={event => setPost({...post, body: event.target.value})}
           type="text"
-          placeholder="Post name"
+          placeholder="Post description"
         />
         {/*//* Simple input from html */}
         {/* <input ref={bodyInputRefSimple} type="text"/> */}
