@@ -1,9 +1,8 @@
 import React, { useState, useRef } from "react";
+import PostForm from "./components/PostForm";
 // import ClassCounter from "./components/ClassCounter";
 // import Counter from "./components/Counter";
 import PostList from "./components/PostList";
-import MyButton from "./components/UI/button/MyButton";
-import MyInput from "./components/UI/input/MyInput";
 import './styles/App.css'
 
 function App() {
@@ -43,55 +42,23 @@ function App() {
     {id: 3, title: 'Javascript 3', body: 'Description'},
   ])
 
-  const [post, setPost] = useState({title: '', body: ''})
-  // const bodyInputRef = useRef()
-  // const bodyInputRefSimple = useRef()
+  const createPost = (newPost) => {
+    setPosts([...posts, newPost]);
+  }
 
-  const addNewPost = (event) => {
-    event.preventDefault()
-    setPosts([...posts, {...post, id: Date.now()}])
-    setPost({title: '', body: ''})
-
-    // console.log("MyInput value = " + bodyInputRef.current.value)
-    // console.log("MyInput element = " + bodyInputRef.current)
-    // console.log(bodyInputRef.current)
-    // console.log("input value = " + bodyInputRefSimple.current.value)
-    // console.log("input element = " + bodyInputRefSimple.current)
-    // console.log(bodyInputRefSimple.current)
+  const removePost = (post) => {
+    setPosts(posts.filter(p => p.id !== post.id))
   }
 
   return (
     // appOne;
 
     <div className="App">
-      <form>
-        {/*//* Управляемый компонент */}
-        <MyInput
-          value={post.title}
-          onChange={event => setPost({...post, title: event.target.value})}
-          type="text"
-          placeholder="Post name"
-        />
-        <MyInput
-          value={post.body}
-          onChange={event => setPost({...post, body: event.target.value})}
-          type="text"
-          placeholder="Post description"
-        />
-        {/*//* Simple input from html */}
-        {/* <input ref={bodyInputRefSimple} type="text"/> */}
-        {/*//* НЕ управляемый компонент. С помощью ref мы получаем ссылку на сам элемент.
-           //* bodyInputRef.current == <MyInput ... />
-           //* bodyInputRef.current.value == значению в элементе*/}
-        {/* <MyInput
-          ref={bodyInputRef}
-          type="text"
-          placeholder="Post description"
-        /> */}
-        {/* <MyButton disabled>Create post</MyButton> */}
-        <MyButton onClick={addNewPost}>Create post</MyButton>
-      </form>
-      <PostList posts={posts} title="List of posts about JS"/>
+      <PostForm create={createPost}/>
+      {posts.length !== 0
+        ? <PostList remove={removePost} posts={posts} title="List of posts about JS"/>
+        : <div>Posts don't found</div>
+      }
     </div>
   );
 }
