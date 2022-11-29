@@ -4,7 +4,9 @@ import PostForm from "./components/PostForm";
 // import ClassCounter from "./components/ClassCounter";
 // import Counter from "./components/Counter";
 import PostList from "./components/PostList";
+import MyButton from "./components/UI/button/MyButton";
 import MyInput from "./components/UI/input/MyInput";
+import MyModal from "./components/UI/MyModal/MyModal";
 import MySelect from "./components/UI/select/MySelect";
 import './styles/App.css'
 
@@ -45,6 +47,7 @@ function App() {
     {id: 3, title: 'NodeJS', body: 'Backend'},
   ])
   const [filter, setFilter] = useState({sort: '', query: ''})
+  const [modal, setModal] = useState(false)
 
   const sortedPosts = useMemo(() => {
     console.log('call getSortedPosts()')
@@ -60,6 +63,7 @@ function App() {
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
+    setModal(false)
   }
 
   const removePost = (post) => {
@@ -70,7 +74,12 @@ function App() {
     // appOne;
 
     <div className="App">
-      <PostForm create={createPost}/>
+      <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>
+        Create post
+      </MyButton>
+      <MyModal visible={modal} setVisible={setModal}>
+        <PostForm create={createPost}/>
+      </MyModal>
       <hr style={{margin: '15px 0'}}/>
       <PostFilter
         filter={filter}
