@@ -57,7 +57,7 @@ function App() {
       <PostForm create={createPost}/>
       {posts.length !== 0
         ? <PostList remove={removePost} posts={posts} title="List of posts about JS"/>
-        : <div>Posts don't found</div>
+        : <h1 style={{textAlign: 'center'}}>Posts don't found</h1>
       }
     </div>
   );
