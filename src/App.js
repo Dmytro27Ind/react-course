@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useRef, useMemo } from "react";
 import PostFilter from "./components/PostFilter";
 import PostForm from "./components/PostForm";
@@ -40,11 +41,7 @@ function App() {
   //   <ClassCounter/>
   // </div>;
 
-  const [posts, setPosts] = useState([
-    {id: 1, title: 'Javascript', body: 'Des'},
-    {id: 2, title: 'React', body: 'Native'},
-    {id: 3, title: 'NodeJS', body: 'Backend'},
-  ])
+  const [posts, setPosts] = useState([])
   const [filter, setFilter] = useState({sort: '', query: ''})
   const [modal, setModal] = useState(false)
   const sortedAndSearchPosts = usePosts(posts, filter.sort, filter.query)
@@ -52,6 +49,11 @@ function App() {
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
     setModal(false)
+  }
+
+  async function fetchPosts() {
+    const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
+    setPosts(response.data)
   }
 
   const removePost = (post) => {
@@ -62,6 +64,7 @@ function App() {
     // appOne;
 
     <div className="App">
+      <button onClick={fetchPosts}>GET POSTS</button>
       <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>
         Create post
       </MyButton>
