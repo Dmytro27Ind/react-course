@@ -9,6 +9,7 @@ import PostList from "./components/PostList";
 import MyButton from "./components/UI/button/MyButton";
 import Loader from "./components/UI/Loader/Loader";
 import MyModal from "./components/UI/MyModal/MyModal";
+import { useFetching } from "./hooks/useFetching";
 import { usePosts } from "./hooks/usePosts";
 import './styles/App.css'
 
@@ -46,8 +47,17 @@ function App() {
   const [posts, setPosts] = useState([])
   const [filter, setFilter] = useState({sort: '', query: ''})
   const [modal, setModal] = useState(false)
+  const [totalCount, setTotalCount] = useState(0)
+  const [limit, setLimit] = useState(10)
+  const [page, setPage] = useState(1)
   const sortedAndSearchPosts = usePosts(posts, filter.sort, filter.query)
-  const [isPostsLoading, setIsPostsLoading] = useState(false)
+
+  const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
+    const response = await PostService.getAll(limit, page)
+    setPosts(response.data)
+    console.log(response.headers['x-total-count'])
+    setTotalCount(response.headers['x-total-count'])
+  })
 
   useEffect(() => {
     console.log('useEffect component did mount')
@@ -57,15 +67,6 @@ function App() {
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
     setModal(false)
-  }
-
-  async function fetchPosts() {
-    setIsPostsLoading(true)
-    setTimeout(async () => {
-      const posts = await PostService.getAll()
-      setPosts(posts)
-      setIsPostsLoading(false)
-    }, 1000)
   }
 
   const removePost = (post) => {
@@ -87,6 +88,9 @@ function App() {
         filter={filter}
         setFilter={setFilter}
       />
+      {postError &&
+        <h1>Error: ${postError}</h1>
+      }
       {isPostsLoading
         ? <div style={{display: 'flex', justifyContent: 'center', marginTop: 50}}><Loader/></div>
         : <PostList remove={removePost} posts={sortedAndSearchPosts} title="List of posts about JS"/>
