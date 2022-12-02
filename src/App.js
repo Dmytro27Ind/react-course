@@ -12,6 +12,7 @@ import MyModal from "./components/UI/MyModal/MyModal";
 import { useFetching } from "./hooks/useFetching";
 import { usePosts } from "./hooks/usePosts";
 import './styles/App.css'
+import { getPageCount, getPagesArray } from "./utils/pages";
 
 function App() {
 
@@ -47,16 +48,17 @@ function App() {
   const [posts, setPosts] = useState([])
   const [filter, setFilter] = useState({sort: '', query: ''})
   const [modal, setModal] = useState(false)
-  const [totalCount, setTotalCount] = useState(0)
+  const [totalPages, setTotalPages] = useState(0)
   const [limit, setLimit] = useState(10)
   const [page, setPage] = useState(1)
   const sortedAndSearchPosts = usePosts(posts, filter.sort, filter.query)
+  let pagesArray = getPagesArray(totalPages)
 
   const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
     const response = await PostService.getAll(limit, page)
     setPosts(response.data)
-    console.log(response.headers['x-total-count'])
-    setTotalCount(response.headers['x-total-count'])
+    const totalCount = response.headers['x-total-count']
+    setTotalPages(getPageCount(totalCount, limit))
   })
 
   useEffect(() => {
@@ -71,6 +73,11 @@ function App() {
 
   const removePost = (post) => {
     setPosts(posts.filter(p => p.id !== post.id))
+  }
+
+  const changePage = (page) => {
+    setPage(page)
+    fetchPosts()
   }
 
   return (
@@ -95,6 +102,17 @@ function App() {
         ? <div style={{display: 'flex', justifyContent: 'center', marginTop: 50}}><Loader/></div>
         : <PostList remove={removePost} posts={sortedAndSearchPosts} title="List of posts about JS"/>
       }
+      <div className="page__wrapper">
+        {pagesArray.map(p =>
+          <span
+            key={p}
+            onClick={() => changePage(p)}
+            className={page === p ? 'page page__current' : 'page'}
+          >
+            {p}
+          </span>
+        )}
+      </div>
     </div>
   );
 }
