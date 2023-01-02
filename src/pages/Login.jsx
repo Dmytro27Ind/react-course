@@ -3,13 +3,17 @@ import { useContext } from 'react'
 import MyButton from '../components/UI/button/MyButton'
 import { AuthContext } from '../context'
 import MyInput from '../components/UI/input/MyInput'
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const {isAuth, setIsAuth} = useContext(AuthContext)
+  const navigate = useNavigate();
+
   const login = (event) => {
     event.preventDefault();
     setIsAuth(true);
     localStorage.setItem('auth', 'true')
+    navigate('/')
   }
 
   return (

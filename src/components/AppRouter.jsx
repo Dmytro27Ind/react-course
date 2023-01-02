@@ -7,15 +7,22 @@ import Error from "../pages/Error";
 import Login from '../pages/Login';
 import { useContext } from 'react';
 import { AuthContext } from '../context';
+import Loader from './UI/Loader/Loader';
 
 function AppRouter() {
-  const {isAuth} = useContext(AuthContext)
+  const {isAuth, isLoading} = useContext(AuthContext)
+
+  if (isLoading) {
+    return <Loader/>
+  }
+
   return (
     isAuth
       ?
       <Routes>
         <Route exact path="/about" element={<About/>}/>
         <Route exact path="/posts" element={<Posts/>}/>
+        <Route exact path="/" element={<Navigate to="/posts"/>}/>
         <Route exact path="/posts/:id" element={<PostIdPage/>}/>
         <Route exact path="/error" element={<Error/>}/>
         {/* 👇️ only match this when no other routes match */}
